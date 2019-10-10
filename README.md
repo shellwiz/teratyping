@@ -1,4 +1,4 @@
-# Teratyping
+# Traftyping
 
 Generate [trafaret](https://github.com/Deepwalker/trafaret) from `__init__` class & add method `init_from_dict` 
 

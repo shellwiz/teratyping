@@ -39,7 +39,7 @@ def construct_traf(f: Callable, prev_classes=()):
 
     return t.Dict({
         name_arg: create_type_arg(f.__annotations__.get(name_arg, None)) \
-        for name_arg in filter(lambda a: a != "self", f.__code__.co_varnames)
+        for name_arg in filter(lambda a: a != "self", f.__code__.co_varnames[0:f.__code__.co_argcount])
     })
 
 
@@ -68,20 +68,17 @@ def init_cls_from_trafareted_dict(cls: type, d: dict):
 T = TypeVar('T')
 
 
-class MetaBaseTraftyping(type):
-    @property
-    def trafaret(cls):
+class BaseTraftyping:
+    @classmethod
+    def get_trafaret(cls) -> t.Dict:
         if not(getattr(cls, '_trafaret', None)):
             cls._trafaret = construct_traf(cls.__init__)
 
         return cls._trafaret
 
+    @classmethod
     def init_from_dict(cls: T, d: dict) -> Type[T]:
-        trafateted_d: dict = cls.trafaret(d)
+        trafateted_d: dict = cls.get_trafaret()(d)
 
         return init_cls_from_trafareted_dict(cls, trafateted_d)
-
-
-class BaseTraftyping(metaclass=MetaBaseTraftyping):
-    trafaret: t.Dict
 

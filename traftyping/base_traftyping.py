@@ -77,7 +77,7 @@ class BaseTraftyping:
         return cls._trafaret
 
     @classmethod
-    def init_from_dict(cls: T, d: dict) -> Type[T]:
+    def init_from_dict(cls: Type[T], d: dict) -> T:
         trafateted_d: dict = cls.get_trafaret()(d)
 
         return init_cls_from_trafareted_dict(cls, trafateted_d)
